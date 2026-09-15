@@ -17,8 +17,6 @@ public class ServicoRequestDTO {
     @NotNull
     @Positive
     private Integer duracaoMinutos;
-    @NotNull
-    private Integer profissionalId;
 
 //Getters e Setters
 
@@ -45,13 +43,5 @@ public class ServicoRequestDTO {
 
     public void setDuracaoMinutos(Integer duracaoMinutos) {
         this.duracaoMinutos = duracaoMinutos;
-    }
-
-    public Integer getProfissionalId() {
-        return profissionalId;
-    }
-
-    public void setProfissionalId(Integer profissionalId) {
-        this.profissionalId = profissionalId;
     }
 }
