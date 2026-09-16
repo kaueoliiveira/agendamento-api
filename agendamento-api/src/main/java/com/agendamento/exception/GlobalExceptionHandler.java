@@ -26,5 +26,10 @@ public class GlobalExceptionHandler {
         var erros = exception.getMessage();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erros);
     }
+    @ExceptionHandler(ProfissionalNaoEncontradoException.class)
+    public ResponseEntity<String> tratarErroProfissionalNaoEncontrado(ProfissionalNaoEncontradoException exception){
+        var erros = exception.getMessage();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erros);
+    }
 }
 

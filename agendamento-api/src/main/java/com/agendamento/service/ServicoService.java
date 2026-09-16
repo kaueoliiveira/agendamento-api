@@ -42,19 +42,26 @@ public class ServicoService {
     public Optional<ServicoResponseDTO> buscarPorId(Integer id) {
         return servicoRepository.findById(id).map(servico -> new ServicoResponseDTO(servico));
     }
-    public boolean excluir(Integer id) {
-        if (servicoRepository.existsById(id)) {
-            servicoRepository.deleteById(id);
-            return true;
+    public boolean excluir(Integer id,Integer profissionalId) {
+        Optional<Servico> servico = servicoRepository.findById(id);
+        if (servico.isEmpty()) {
+            return false;
         }
-        return false;
+        if(!servico.get().getProfissional().getId().equals(profissionalId)) {
+            return false;
+        }
+        servicoRepository.deleteById(id);
+        return true;
     }
-    public Optional<ServicoResponseDTO> atualizar(Integer id, ServicoRequestDTO dados) {
+    public Optional<ServicoResponseDTO> atualizar(Integer id, ServicoRequestDTO dados,Integer profissionalId) {
         Optional<Servico> servico = servicoRepository.findById(id);
         if (!servico.isPresent()) {
             return Optional.empty();
         }
         Servico servicoAtualizado = servico.get();
+        if(!servicoAtualizado.getProfissional().getId().equals(profissionalId)) {
+            return Optional.empty();
+        }
         servicoAtualizado.setNome(dados.getNome());
         servicoAtualizado.setPreco(dados.getPreco());
         servicoAtualizado.setDuracaoMinutos(dados.getDuracaoMinutos());
