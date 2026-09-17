@@ -2,6 +2,7 @@ package com.agendamento.controller;
 
 import com.agendamento.dto.ServicoRequestDTO;
 import com.agendamento.dto.ServicoResponseDTO;
+import com.agendamento.exception.ProfissionalNaoEncontradoException;
 import com.agendamento.service.ProfissionalService;
 import com.agendamento.service.ServicoService;
 import jakarta.validation.Valid;
@@ -22,16 +23,14 @@ public class ServicoController {
     }
     @PostMapping
     public ResponseEntity<ServicoResponseDTO> salvar(@RequestBody @Valid ServicoRequestDTO dados) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        Integer profissionalId = profissionalService.buscarPorEmail(email).get().getId();
+        Integer profissionalId = getProfissionalAutenticado();
         ServicoResponseDTO response = servicoService.salvar(dados, profissionalId);
         return ResponseEntity.status(201).body(response);
 
     }
     @GetMapping
     public ResponseEntity<List<ServicoResponseDTO>> buscarServicos(){
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        Integer profissionalId = profissionalService.buscarPorEmail(email).get().getId();
+        Integer profissionalId = getProfissionalAutenticado();
         return ResponseEntity.ok(servicoService.buscarPorProfissional(profissionalId));
     }
     @GetMapping("/{id}")
@@ -39,22 +38,25 @@ public class ServicoController {
         return servicoService.buscarPorId(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ServicoResponseDTO> atualizar(@Valid @PathVariable Integer id, @RequestBody ServicoRequestDTO dados){
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        Integer profissionalId = profissionalService.buscarPorEmail(email).get().getId();
+    public ResponseEntity<ServicoResponseDTO> atualizar(@PathVariable Integer id, @RequestBody @Valid ServicoRequestDTO dados){
+        Integer profissionalId = getProfissionalAutenticado();
         return servicoService.atualizar(id, dados, profissionalId).map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
 
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarServicoPorId(@PathVariable Integer id){
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        Integer profissionalId = profissionalService.buscarPorEmail(email).get().getId();
+        Integer profissionalId = getProfissionalAutenticado();
         boolean excluido = servicoService.excluir(id, profissionalId);
         if(excluido){
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+    private Integer getProfissionalAutenticado(){
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return profissionalService.buscarPorEmail(email)
+                .orElseThrow(() -> new ProfissionalNaoEncontradoException("Profissional não encontrado")).getId();
     }
 
 

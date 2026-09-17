@@ -16,7 +16,7 @@ public class Servico {
     private String nome;
     @Column(name = "preco")
     private BigDecimal preco;
-    @Column(name = "duracaoMinutos")
+    @Column(name = "duracao_minutos")
     private Integer duracaoMinutos;
     @ManyToOne
     @JoinColumn(name = "profissional_id")

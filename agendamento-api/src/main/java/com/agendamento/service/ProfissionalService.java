@@ -45,13 +45,11 @@ public class ProfissionalService {
                 .collect(Collectors.toList());
     }
     public Boolean excluir(Integer id){
-         boolean profissional = profissionalRepository.existsById(id);
-        if(profissional){
-            profissionalRepository.deleteById(id);
-        }else{
-            return profissional;
+        if(!profissionalRepository.existsById(id)){
+            return false;
         }
-        return profissional;
+        profissionalRepository.deleteById(id);
+        return true;
     }
     public Optional<ProfissionalResponseDTO> atualizar(Integer id,ProfissionalRequestDTO dados) {
         Optional<Profissional> profissionalOptional = profissionalRepository.findById(id);
