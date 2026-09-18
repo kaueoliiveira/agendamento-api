@@ -1,24 +1,20 @@
 package com.agendamento.entity;
+
 import jakarta.persistence.*;
-
 @Entity
-@Table (name = "profissionais")
-
-public class Profissional {
-
-//Atributos
-
+@Table(name = "clientes")
+public class Cliente {
     @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     @Column(name = "nome")
     private String nome;
     @Column(name = "email")
     private String email;
     @Column(name = "senha")
     private String senha;
-    @Column(name = "cpf")
-    private String cpf;
+    @Column(name = "telefone")
+    private String telefone;
 
 //Getters e Setters
 
@@ -55,26 +51,22 @@ public class Profissional {
         this.senha = senha;
     }
 
-    public String getCpf() {
-        return cpf;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
-//Construtor
-
-
-    public Profissional(Integer id, String nome, String email, String senha, String cpf) {
+    public Cliente(Integer id, String nome, String email, String senha, String telefone) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-        this.cpf = cpf;
+        this.telefone = telefone;
     }
 
-//Construtor vazio
-
-    public Profissional() {}
+    public Cliente() {
+    }
 }
