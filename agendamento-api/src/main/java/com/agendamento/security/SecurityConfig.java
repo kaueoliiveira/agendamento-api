@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.
                 //.requestMatchers("/auth/login", "/profissionais").permitAll() :  rotas  públicas
                 //.anyRequest().authenticated() : as outras precisam de token
-                        requestMatchers(HttpMethod.POST,"/auth/login","/profissionais").permitAll().anyRequest().authenticated())
+                        requestMatchers(HttpMethod.POST,"/auth/login","/profissionais","/clientes").permitAll().anyRequest().authenticated())
                 /*.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class): Adiciona o JwtFilter antes do
                 filtro padrão do Spring e garante que o token seja validado antes de qualquer coisa. */
                         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).build();
